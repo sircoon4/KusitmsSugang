@@ -1,0 +1,327 @@
+<!doctype html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      https://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="큐시즘 세션 수강신청 페이지">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <meta property="og:image" content="url"> -->
+
+  <title>큐시즘 수강신청 화이팅!</title>
+
+  <!-- Disable tap highlight on IE -->
+  <meta name="msapplication-tap-highlight" content="no">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="큐시즘 수강신청 화이팅!">
+  <meta name="theme-color" content="#303F9F">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="큐시즘 수강신청 화이팅!">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#303F9F">
+
+  <!-- Tile icon for Win8 -->
+  <meta name="msapplication-TileColor" content="#3372DF">
+  <meta name="msapplication-navbutton-color" content="#303F9F">
+
+  <!-- Material Design Lite -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.blue_grey-orange.min.css">
+  <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+
+  <link rel="stylesheet" href="style/main.css">
+
+  <script src="scripts/kakao.min.js"></script>
+  <script>
+    
+    try{
+      // SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해 주세요.
+      Kakao.init('d6dd26f2177a19cfa8fa0c11423a66cf');
+      // SDK 초기화 여부를 판단합니다.
+      console.log(Kakao.isInitialized());
+    }
+    catch(err){
+      alert(err);
+    }
+    
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
+
+    .splash-text{
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 700;
+      font-size: 25px;
+    }
+
+    .top-bar {
+      background: #283c86;  /* fallback for old browsers */
+      background: -webkit-linear-gradient(to right, #009687, #283c86);  /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to right, #009687, #283c86); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+      height: 60px;
+      color: white;
+      
+    }
+
+    .top-bold {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: white;
+      margin-left: 10px;
+      float: left;
+      line-height: 57px;
+
+    }
+
+    .main {
+      background-color: white;
+    }
+
+    .logout-btn {
+      margin-left: 10px;
+      background-color: #009687;  
+      height: 37px;
+      width: 80px;
+      float: left;
+      border-radius: 7px;
+      border: 0px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 700;
+      text-align:center;
+      
+      
+    }
+
+    .label {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 700;
+      color: #283c86;
+      font-size: 15px;
+      margin-left: 10px;
+      margin-top: 15px;
+      display: inline-block;
+    }
+
+    .label-input {
+      display: block;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 400;
+      font-size: 13px;
+      color: black;
+      margin-left: 10px;
+      border: 1px solid #D8D8D8; 
+      border-radius: 10px; 
+
+    }
+
+    .radio-form{
+      border: 1px solid #D8D8D8; 
+      border-radius: 10px; 
+      margin-left: 10px;
+      margin-right: 10px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      
+    }
+
+    .radio-block{
+      display: block;
+      
+    }
+
+    .radio{
+      margin-top: 10px;
+      margin-left: 15px;
+      margin-right: 10px;
+      appearance: none;
+      -webkit-appearance: none;
+      border: 1px solid #D8D8D8;
+      width: 15px;
+      height: 15px;
+      border-radius: 100%;
+
+    }
+
+    .radio:checked{
+      background-color: #009687;
+
+
+    }
+
+    .radio-label{
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 400;
+      color: black;
+
+    }
+
+    .radio-number{
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 700;
+      color: #009687;
+    }
+
+    .submit-btn{
+      background-color: #009687;  
+      height: 37px;
+      width: 80px;
+      border-radius: 7px;
+      border: 0px;
+      margin-top: 20px;
+      margin-left: 10px;
+      color: white;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 700;
+      text-align:center;
+      
+
+    }
+
+    .last-text{
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 400;
+      color: black;
+      margin-top: 20px;
+      margin-left: 10px;
+    }
+    
+    #footer {
+      position:absolute;
+      bottom:0;
+      width:100%;
+      height:40px;
+      pointer-events: none;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+  <!-- Splash screen -->
+  <section id="page-splash">
+    <p class="splash-text">큐시즘 세션 수강신청</p>
+    </br>
+    <div>
+      <a id="kakao-login-btn"></a>
+    </div>
+    <div id="footer">
+      <text lang="en">(c)COPYRIGHT KUSITMS. INC. <br>
+        Department of Educational Planning</text>
+    </div>
+  </section>  
+
+  <!-- Header section containing logo and menu -->
+  <header class="top-bar">
+  
+    <p class="top-bold">큐시즘 세션 수강신청</p>
+    <button id="sign-out-button" class="logout-btn">LOGOUT</button>
+   
+  </header>
+
+  <main class="main">
+      
+    <label for="staticName" class="label">이름</label>
+
+    <input type="text" readonly class="label-input" id="staticName" value="">
+
+    <label for="staticID" class="label">ID</label>
+    
+    <input type="text" readonly class="label-input" id="staticId" value="">
+
+
+    <p class="label">세션 신청</p>
+
+    <form class="radio-form">
+    
+      <div class="radio-block">
+        <input class="radio" type="radio" name="sessions" id="exampleRadios1" value="option1" checked>
+        <label id="option1" class="radio-label" for="exampleRadios1">
+          권희성 - UX기획과 프로토타입 디자인 실습 &nbsp; 
+        </label>
+        <text id="option1-text" class="radio-number">
+        0/16
+        </text>
+      </div>  
+
+      <div class="radio-block">
+        <input class="radio" type="radio" name="sessions" id="exampleRadios2" value="option2">
+        <label id="option2" class="radio-label" for="exampleRadios2">
+          금나연 - POWER BI로 데이터 시각화하기 &nbsp; 
+        </label>
+        <text id="option2-text" class="radio-number">
+          0/16
+        </text>
+      </div>
+
+      <div class="radio-block">
+        <input class="radio" type="radio" name="sessions" id="exampleRadios3" value="option3">
+        <label id="option3" class="radio-label" for="exampleRadios3">
+          박예진 - UiPath로 구현하는 RPA 업무 자동화 &nbsp; 
+        </label>
+        <text id="option3-text" class="radio-number">
+          0/16
+        </text>
+      </div>
+
+      <div class="radio-block">
+        <input class="radio" type="radio" name="sessions" id="exampleRadios4" value="option4">
+        <label id="option4" class="radio-label" for="exampleRadios4">
+          이승희 - 금융 데이터 분석과 A.I 투자 &nbsp; 
+        </label>
+        <text id="option4-text" class="radio-number">
+          0/16
+        </text>
+      </div>
+
+      <div class="radio-block">
+        <input class="radio" type="radio" name="sessions" id="exampleRadios5" value="option5">
+        <label id="option5" class="radio-label" for="exampleRadios5">
+          이예진 - 클라우드 서비스와 AWS &nbsp; 
+        </label>
+        <text id="option5-text" class="radio-number">
+          0/16
+        </text>
+      </div>
+    </form>
+
+    <p class="last-text">✔ 수강신청이 완료되면 수강신청 변경기간까지 세션 변경이 불가능합니다.</p>
+
+    <div>
+      <button id="submit-button" type="button" class="submit-btn">SUBMIT</button>
+    </div>
+  </main>
+  
+  <div id="footer">
+    <text lang="en">(c)COPYRIGHT KUSITMS. INC. <br>
+      Department of Educational Planning</text>
+  </div>
+</div>
+
+<!-- Import and configure the Firebase SDK -->
+<!-- These scripts are made available when the app is served or deployed on Firebase Hosting -->
+<!-- If you do not serve/host your project using Firebase Hosting see https://firebase.google.com/docs/web/setup -->
+<script src="/__/firebase/8.4.3/firebase-app.js"></script>
+<script src="/__/firebase/8.4.3/firebase-auth.js"></script>
+<script src="/__/firebase/8.4.3/firebase-database.js"></script>
+<script src="/__/firebase/init.js"></script>
+
+<script src="scripts/main.js"></script>
+</body>
+</html>

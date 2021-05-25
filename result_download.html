@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KUSITMS session result downloader</title>
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/8.4.3/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/8.4.3/firebase-database.js"></script>
+    <script defer src="/__/firebase/8.4.3/firebase-messaging.js"></script>
+    <script defer src="/__/firebase/8.4.3/firebase-storage.js"></script>
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script defer src="/__/firebase/init.js"></script>
+
+    <style media="screen">
+      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
+      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
+      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
+      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
+      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
+      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
+      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
+      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
+      @media (max-width: 600px) {
+        body, #message { margin-top: 0; background: white; box-shadow: none; }
+        body { border-top: 16px solid #ffa100; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="message">
+      <h2>KUSITMS</h2>
+      <h1>세션 신청 결과 다운로드</h1>
+      <p>하단의 버튼을 눌러 다운로드 할 수 있습니다.</p>
+      <a target="_blank" onclick="exportExcel()">EXCEL 다운로드</a>
+    </div>
+    <p id="load">Firebase SDK Loading&hellip;</p>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
+    <script>
+    //공통
+    // 참고 출처 : https://redstapler.co/sheetjs-tutorial-create-xlsx/
+    function s2ab(s) { 
+      var buf = new ArrayBuffer(s.length); //convert s to arrayBuffer
+      var view = new Uint8Array(buf);  //create uint8array as viewer
+      for (var i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF; //convert to octet
+      return buf;    
+    }
+
+    function exportExcel(){
+      firebase.database().ref('/users').orderByChild('register_session').once('value').then(function(snapshot){
+        let jsonData = snapshot.val();
+        //console.log(jsonData);
+
+        // step 1. workbook 생성
+        var wb = XLSX.utils.book_new();
+
+        // step 2. 시트 만들기 
+        var newWorksheet = XLSX.utils.json_to_sheet(dataHandler.FirstSheetData(jsonData));
+        // step 3. workbook에 새로만든 워크시트에 이름을 주고 붙인다.  
+        XLSX.utils.book_append_sheet(wb, newWorksheet, 'General');
+
+        // step 4. 엑셀 파일 만들기 
+        var wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
+
+        // step 5. 엑셀 파일 내보내기 
+        saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), 'session_register_result.xlsx');
+      });
+    }
+
+    const dataHandler = {
+      FirstSheetData: function(jsonData) {
+        console.log(jsonData);
+
+        var jsonArr = [];
+        var keyArr = Object.keys(jsonData);
+        keyArr.forEach(value => {
+          var user = jsonData[value];
+
+          var uJson = {};
+
+          if(user.register_session == null)
+            uJson.register_session = "-";
+          else
+            uJson.register_session = user.register_session;
+          uJson.username = user.username;
+          uJson.profile_picture = user.profile_picture;
+          uJson.email = user.email;
+
+          jsonArr.push(uJson);
+        });
+
+        //console.log('First Sheet Data', jsonArr);
+        return jsonArr;
+      },
+      SecondSheetData: function(jsonData) {
+        var jsonArr = [];
+        
+        return jsonArr;
+      },
+      ThirdSheetData: function(jsonData) {
+        var jsonArr = [];
+        
+        return jsonArr;
+      },
+      FourthSheetData: function(jsonData) {
+        var jsonArr = [];
+        
+        return jsonArr;
+      },
+    };
+
+    function countTheObjects (arr) {
+      let count = 0;
+
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i] !== null && arr[i] !== undefined) {
+          count++;
+        }
+      }
+      return count;
+    }
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+        // // The Firebase SDK is initialized and available here!
+        //
+        // firebase.auth().onAuthStateChanged(user => { });
+        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
+        // firebase.messaging().requestPermission().then(() => { });
+        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
+        //
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+        try {
+          let app = firebase.app();
+          let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
+          document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
+        } catch (e) {
+          console.error(e);
+          document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
+        }
+      });
+    </script>
+  </body>
+</html>
